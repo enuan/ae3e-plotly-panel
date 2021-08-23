@@ -4,6 +4,7 @@ import { getTemplateSrv, getLocationSrv } from '@grafana/runtime';
 import { SimpleOptions, defaults } from 'types';
 import merge from 'deepmerge';
 import _ from 'lodash';
+import { CustomScrollbar } from '@grafana/ui';
 
 // tslint:disable
 import Plot from 'react-plotly.js';
@@ -104,24 +105,26 @@ export class SimplePanel extends PureComponent<Props> {
       );
     } else {
       display = (
-        <Plot
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-          data={parameters.data ? merge(data, parameters.data, { arrayMerge: combineMerge }) : data}
-          frames={parameters.frames ? merge(data, parameters.frames, { arrayMerge: combineMerge }) : frames}
-          onInitialized={(figure: any, graphDiv: any) => this.setState({ figure: figure, graphDiv: graphDiv })}
-          //layout={ {autosize:true, height:this.props.height, title: this.props.options.title} }
-          layout={parameters.layout ? merge(layout, parameters.layout) : layout}
-          config={parameters.config ? merge(config, parameters.config) : config}
-          useResizeHandler={true}
-          onClick={(data) => {
-            //console.log(data)
-            var f = new Function('data', 'getLocationSrv', 'getTemplateSrv', this.props.options.onclick);
-            f(data, getLocationSrv, getTemplateSrv);
-          }}
-        ></Plot>
+        <CustomScrollbar>
+          <Plot
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+            data={parameters.data ? merge(data, parameters.data, { arrayMerge: combineMerge }) : data}
+            frames={parameters.frames ? merge(data, parameters.frames, { arrayMerge: combineMerge }) : frames}
+            onInitialized={(figure: any, graphDiv: any) => this.setState({ figure: figure, graphDiv: graphDiv })}
+            //layout={ {autosize:true, height:this.props.height, title: this.props.options.title} }
+            layout={parameters.layout ? merge(layout, parameters.layout) : layout}
+            config={parameters.config ? merge(config, parameters.config) : config}
+            useResizeHandler={true}
+            onClick={(data) => {
+              //console.log(data)
+              var f = new Function('data', 'getLocationSrv', 'getTemplateSrv', this.props.options.onclick);
+              f(data, getLocationSrv, getTemplateSrv);
+            }}
+          ></Plot>
+        </CustomScrollbar>
       );
     }
     return display;

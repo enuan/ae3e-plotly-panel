@@ -6,8 +6,10 @@
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
     "dev": "grafana-toolkit plugin:dev --watch",
-    "sign": "npx @grafana/toolkit plugin:sign",
-    "md5": "certutil -hashfile ae3e-plotly-panel-%npm_package_version%.zip MD5"
+    "sign": "export GRAFANA_API_KEY=`cat token` && npx @grafana/toolkit plugin:sign",
+    "md5": "certutil -hashfile ae3e-plotly-panel-%npm_package_version%.zip MD5",
+    "zip": "mv dist ae3e-plotly-panel && zip -rv ae3e-plotly-panel-${npm_package_version}-custom.zip ae3e-plotly-panel && mv ae3e-plotly-panel dist",
+    "sign-private": "export GRAFANA_API_KEY=`cat token` && npx @grafana/toolkit plugin:sign --rootUrls https://metrics.m3.enuan.com,https://metrics-test-grafana-8-0.m3.enuan.com"
   },
   "author": "AE3E",
   "license": "Apache-2.0",
@@ -22,7 +24,7 @@
     "@emotion/core": "^10.0.27",
     "deepmerge": "^4.2.2",
     "emotion": "^10.0.27",
-    "plotly.js": "1.58.4",
+    "plotly.js": "2.3.1",
     "react-plotly.js": "2.5.1",
     "react-virtualized-auto-sizer": "^1.0.5"
   },
